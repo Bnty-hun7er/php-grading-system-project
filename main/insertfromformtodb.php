@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form to DB</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body style="background-color: black;">
 
     <?php
     include 'dbforform.php'; // Include the database processing file
