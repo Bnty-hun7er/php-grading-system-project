@@ -1,5 +1,5 @@
   <html> 
-    <body>
-      <marquee>PHP project</marquee>
+    <body style="color: lime;">
+      PHP project
   </body> 
 </html>
