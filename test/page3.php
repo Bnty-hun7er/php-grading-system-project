@@ -39,7 +39,7 @@ if ($conn->query($sqlCreateTable) === TRUE) {
 }
 
 // Copy data from another database to this table
-$sourceDB = "students";  // Source database name
+$sourceDB = "students".$year;  // Source database name
 $sourceTable = "students";  // Source table name
 
 // Copy the id and index_No columns from the source table
@@ -134,18 +134,8 @@ function calculateAvg(input, id) {
 }
 </script>
 
-<form action="page2.php" method="GET">
-        <!-- Pass the same year, accyear, and sem to Page 2 -->
-        <input type="hidden" name="year" value="<?php echo $year; ?>">
-        <input type="hidden" name="accyear" value="<?php echo $accyear; ?>">
-        <input type="hidden" name="sem" value="<?php echo $sem; ?>">
-        
-        <button type="submit" style="margin-top: 20px;">Add Another Subject</button>
-    </form>
 
-<form action="page5.php" >
-    <button type="submit" style="margin-top: 20px;">Finish</button>
-</form>
+
 
 </body>
 </html>

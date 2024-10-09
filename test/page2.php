@@ -54,7 +54,8 @@ $conn->query($sqlSelectDb);
 
 // Create the table if it doesn't exist
 $sqlCreateFinal = "CREATE TABLE IF NOT EXISTS final_grade (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    index_No VARCHAR(28) NOT NULL
 )";
 
 if ($conn->query($sqlCreateFinal) === TRUE) {
@@ -63,10 +64,33 @@ if ($conn->query($sqlCreateFinal) === TRUE) {
     echo "Error creating final_grade table: " . $conn->error;
 }
 
+
+
+
+$sourceDB = "students".$year;  // Source database name
+$sourceTable = "students";  // Source table name
+
+// Copy the id and index_No columns from the source table
+$sqlCopyData = "INSERT IGNORE INTO  final_grade (id, index_No)
+                SELECT id, index_number FROM $sourceDB.$sourceTable";
+
+if ($conn->query($sqlCopyData) === TRUE) {
+    // Data copy success
+} else {
+    echo "Error copying data: " . $conn->error;
+}
+
+
+
+
+
+
+
+
+
 // Close the connection
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,5 +133,14 @@ $conn->close();
         <button type="submit" style="margin-left: 50px;">Add</button>
         <span style="color: red;"><?php echo $subjectErr; ?></span><br>
     </form>
+
+    <!-- Corrected form with PHP tags -->
+    <form method="POST" action="page5.php">
+    <input type='hidden' name='year' value='<?php echo htmlspecialchars($year); ?>'>
+    <input type='hidden' name='accyear' value='<?php echo htmlspecialchars($accyear); ?>'>
+    <input type='hidden' name='sem' value='<?php echo htmlspecialchars($sem); ?>'>
+    <button type='submit' style='margin-top: 20px;'>FINISH</button>
+</form>
+
 </body>
 </html>

@@ -62,8 +62,8 @@ foreach ($_POST['ca1'] as $id => $ca1) {
     $ca3 = isset($_POST['ca3'][$id]) ? (int)$_POST['ca3'][$id] : 0;
     $examMarks = isset($_POST['exam_marks'][$id]) ? (int)$_POST['exam_marks'][$id] : 0;
     
-    $avgCA = ($ca1 + $ca2 + $ca3) / 3;
-    $avgMarks = ($avgCA ) + ($examMarks );
+    $avgCA = ($ca1 + $ca2 + $ca3) *35 / 300;
+    $avgMarks = $avgCA + $examMarks;
 
     // Calculate grade
     $grade = 'F';
@@ -83,11 +83,25 @@ foreach ($_POST['ca1'] as $id => $ca1) {
     }
 }
 
+// Add column to the final_grade table
+$sqlAddColumn = "ALTER TABLE final_grade ADD COLUMN $subject VARCHAR(1)";
+if (!$conn->query($sqlAddColumn)) {
+    die("Error adding column: " . $conn->error);
+}
+
+// Update final_grade table with grades from the subject table
+$sqlUpdateGrades = "UPDATE final_grade 
+                     JOIN marks_$subject ON marks_$subject.id = final_grade.id
+                     SET final_grade.$subject = marks_$subject.grade";
+if (!$conn->query($sqlUpdateGrades)) {
+    die("Error updating grades: " . $conn->error);
+}
+
 // Close the statement and connection
 $stmt->close();
 $conn->close();
 
 // Redirect with parameters
-header("Location: page3.php?year=$year&accyear=$accyear&sem=$sem&subject=" . urlencode($subject));
+header("Location: page2.php?year=$year&accyear=$accyear&sem=$sem&subject=" );
 exit;
 ?>
